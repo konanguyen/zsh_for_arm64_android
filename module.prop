@@ -1,7 +1,7 @@
 id=zsh_arm64
 name=ZSH for Arm
 version=1.5
-versionCode=15
-author=me@partcyb.org
+versionCode=16
+author=konanguyen (ng.hao2711@gmail.com), based on the original module by Part Cyborg
 description=Zsh is a modern *nix shell with many advanced features.
 updateJson=https://github.com/konanguyen/zsh_for_arm64_android/releases/latest/download/update.json
