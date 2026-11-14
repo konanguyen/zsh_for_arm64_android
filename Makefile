@@ -5,7 +5,10 @@ ZIP := $(MOD)-$(MODVERSION).zip
 
 VCODE := $(subst .,,$(MODVERSION))
 
-DEPS := $(shell find . -path ./.git -prune -o -path ./build -prune -o -path ./out -prune -o -type f -print)
+# Trigger a rebuild when any tracked project file changes.  git ls-files
+# keeps untracked build outputs (e.g. an NDK extracted inside the tree on
+# CI) out of the dependency list, which a plain `find .` would pick up.
+DEPS := $(shell git ls-files)
 
 # Modern Magisk (>= v20.4) installer layout: module.prop, customize.sh,
 # system/, META-INF.  install.sh and common/ must NOT ship (see Magisk
