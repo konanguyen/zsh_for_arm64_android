@@ -9,7 +9,7 @@ This repository cross-compiles zsh with the official Android NDK toolchain and p
 ## Compatibility
 
 * arm64 (aarch64) devices only.
-* Android 6.0+ (API 23), which matches the minimum Android version recent Magisk releases support.
+* Android 7.0+ (API 24), which matches the minimum Android version current Magisk releases support.
 * Magisk v20.4+ — the zip uses the official module layout (`customize.sh`, embedded installer stub).
 * KernelSU — installable too. Because the module overlays `/system`, a mounting metamodule (e.g. `meta-overlayfs`) must be installed for the overlay to take effect.
 * zsh 5.9 statically linked against ncurses 6.5, with common terminal types (xterm, screen, tmux, rxvt, alacritty, foot, ...) compiled in as terminfo fallbacks, so no terminfo database is required on the device.
@@ -40,6 +40,10 @@ make distclean                     # also remove built zips
 The bundled zsh (binary, startup files, and completion/function scripts) is distributed under the [licence of the zsh project](https://github.com/zsh-users/zsh/blob/master/LICENCE), reproduced verbatim in [LICENSE](LICENSE). None of the shipped zsh functions carry the GPL provisions mentioned in that file, so the licence above covers the whole distribution. The build scripts in this repository are provided under the same permissive terms. This module is based on the original work by Part Cyborg.
 
 ## Changelog
+
+v1.7 - 11/15/2026
+* Target Android 7.0 (API 24), matching the minimum Android version current Magisk releases support.
+* Update module authorship credit.
 
 v1.5 - 11/15/2026
 * Update zsh to 5.9 and link it against a statically built ncurses 6.5 (built-in terminfo fallbacks, no terminfo database required on device).

@@ -33,11 +33,11 @@ NCARCHIVE := $(NCSRCDIR).tar.gz
 NCFALLBACK := ansi,dumb,linux,vt52,vt100,vt102,vt220,vt320,vt420,xterm,xterm-color,xterm-16color,xterm-88color,xterm-256color,rxvt,screen,screen-256color,tmux,tmux-256color,putty,putty-256color,gnome,gnome-256color,konsole,konsole-256color,Eterm,eterm-color,alacritty,foot
 
 # Android NDK toolchain (clang/lld).  Bionic has no static libc, so the
-# binary links dynamically against the system libc instead.  API 23
-# (Android 6.0) matches the minimum Magisk itself supports.
+# binary links dynamically against the system libc instead.  API 24
+# (Android 7.0) matches the minimum Android version Magisk supports.
 NDK ?= $(HOME)/Android/Sdk/ndk/29.0.14206865
 TC := $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin
-CROSS := aarch64-linux-android23
+CROSS := aarch64-linux-android24
 NDKCFLAGS := -O2 -fPIE -Wno-error=implicit-function-declaration -Wno-error=int-conversion
 
 CURDIR := $(shell pwd)

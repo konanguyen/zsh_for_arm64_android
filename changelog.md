@@ -1,5 +1,9 @@
 ### Changelog
 
+#### v1.7 - 11/15/2026
+* Target Android 7.0 (API 24), matching the minimum Android version current Magisk releases support.
+* Update module authorship credit.
+
 #### v1.5 - 11/15/2026
 * Update zsh to 5.9 and link it against a statically built ncurses 6.5 (built-in terminfo fallbacks, no terminfo database required on device).
 * Build with the Android NDK (bionic) instead of a static glibc cross toolchain.
