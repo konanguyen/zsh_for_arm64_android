@@ -1,7 +1,6 @@
 id=zsh_arm64
 name=ZSH for Arm
-version=1.4
-versionCode=14
+version=1.5
+versionCode=15
 author=me@partcyb.org
 description=Zsh is a modern *nix shell with many advanced features.
-minMagisk=1700

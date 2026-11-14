@@ -2,17 +2,50 @@
 
 ## Overview
 
-Zsh is a shell designed for interactive use, although it is also a powerful scripting language. Many of the useful features of bash, ksh, and tcsh were incorporated into zsh; many original features were added. The [introductory document](http://zsh.sourceforge.net/Intro/intro_toc.html) details some of the unique features of zsh. It assumes basic knowledge of the standard UNIX shells; the intent is to show a reader already familiar with one of the other major shells what makes zsh more useful or more powerful. This document is not at all comprehensive; [read the manual](http://zsh.sourceforge.net/Doc/) entry for a description of the shell that is complete, concise and up-to-date, although somewhat overwhelming and devoid of examples. Alternatively, the [user guide](http://zsh.sourceforge.net/Guide/zshguide.html) offers wordy explanations of many of the shell's features. 
+Zsh is a shell designed for interactive use, although it is also a powerful scripting language. Many of the useful features of bash, ksh, and tcsh were incorporated into zsh; many original features were added. See the [user guide](http://zsh.sourceforge.net/Guide/zshguide.html) or the [manual](http://zsh.sourceforge.net/Doc/) for what makes zsh useful.
+
+This repository cross-compiles zsh with the official Android NDK toolchain and packages the result as a [Magisk](https://github.com/topjohnwu/Magisk) / [KernelSU](https://kernelsu.org/) module. It is based on the original module by [Part Cyborg](https://github.com/partcyborg/zsh_arm64_magisk).
 
 ## Compatibility
-Zsh is currently being built for arm64 (aarch64) devices, so it should work on any device with a 64bit arm SOC.  The Makefile could easily be adjusted to compile it for 32bit arm systems as well (or any other CPU with a modern GCC compiler for that matter), but everything is arm64 these days so I did not see the need.
 
-## Instructions
-Just flash the zip in Magisk Manager, and you are good to go.  Zsh is installed in /system/xbin, You can run Zsh at any time from either a terminal emulator or an adb session by just typing `zsh`.
+* arm64 (aarch64) devices only.
+* Android 6.0+ (API 23), which matches the minimum Android version recent Magisk releases support.
+* Magisk v20.4+ — the zip uses the official module layout (`customize.sh`, embedded installer stub).
+* KernelSU — installable too. Because the module overlays `/system`, a mounting metamodule (e.g. `meta-overlayfs`) must be installed for the overlay to take effect.
+* zsh 5.9 statically linked against ncurses 6.5, with common terminal types (xterm, screen, tmux, rxvt, alacritty, foot, ...) compiled in as terminfo fallbacks, so no terminfo database is required on the device.
 
-If you run Zsh as root, a home directory is automatically created for you at `/data/local/root`, and if ran as system one is created for you at `/data/local/system`.  Feel free to use this like a normal linux home directory.  Using zsh under the system user currently requires ro.secure=0 due to the home directory being located at /data/local/system.  I personally only use it as the root user.  User apps don't have sufficient privileges to run this Zsh install.  If you want to use zsh with regular app permissions, I highly recommend [Termux](https://wiki.termux.com/wiki/Main_Page).
+## Installation
+
+Flash the zip in the Magisk app or a KernelSU manager. Zsh is installed to `/system/xbin/zsh`; run it at any time from a terminal emulator or an adb session by typing `zsh`.
+
+If you run zsh as root, a home directory is created for you at `/data/local/root`; run as the system user, one is created at `/data/local/system` (this requires `ro.secure=0`). Regular apps don't have sufficient privileges to use this install — if you want zsh with app permissions, use [Termux](https://wiki.termux.com/wiki/Main_Page).
+
+## Building from source
+
+Requirements: an [Android NDK](https://developer.android.com/ndk) (r29 or newer; the default path assumes `~/Android/Sdk/ndk/29.0.14206865`), GNU make, wget, zip, and a host C compiler — the host compiler builds the `tic` tool used to embed terminfo fallback entries into the cross-compiled ncurses.
+
+```
+make                               # download sources, build, package out/zsh_arm64-<version>.zip
+make NDK=/path/to/android-ndk-r29  # use an NDK at a custom location
+make clean                         # remove build/work
+make distclean                     # also remove built zips
+```
+
+## CI
+
+`.github/workflows/build.yml` builds the module on every tag push, uploads the zip as a build artifact, and attaches it to the GitHub release for that tag.
+
+## License
+
+The bundled zsh (binary, startup files, and completion/function scripts) is distributed under the [licence of the zsh project](https://github.com/zsh-users/zsh/blob/master/LICENCE), reproduced verbatim in [LICENSE](LICENSE). None of the shipped zsh functions carry the GPL provisions mentioned in that file, so the licence above covers the whole distribution. The build scripts in this repository are provided under the same permissive terms. This module is based on the original work by Part Cyborg.
 
 ## Changelog
+
+v1.5 - 11/15/2026
+* Update zsh to 5.9 and link it against a statically built ncurses 6.5 (built-in terminfo fallbacks, no terminfo database required on device).
+* Build with the Android NDK (bionic) instead of a static glibc cross toolchain.
+* Modernize the module layout for current Magisk (>= v20.4) and KernelSU: `customize.sh` replaces the legacy `install.sh`/`common/` scripts, and `META-INF/com/google/android/update-binary` is the official installer stub.
+* Add LICENSE (the zsh licence) and a CI workflow that builds releases on tag push.
 
 v1.2 - 8/07/2019
 * Update README [view commit](http://github.com/partcyborg/zsh_arm64_magisk/commit/670908e73f5e9ebbd36cfe30775a9139f6ed0db0)

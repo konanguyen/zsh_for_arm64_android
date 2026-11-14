@@ -42,6 +42,7 @@ name=zsh/mathfunc modfile=Src/Modules/mathfunc.mdd link=static auto=no load=no
 name=zsh/newuser modfile=Src/Modules/newuser.mdd link=static auto=no load=no functions=Scripts/newuser Functions/Newuser/*
 name=zsh/param/private modfile=Src/Modules/param_private.mdd link=static auto=no load=no
 name=zsh/parameter modfile=Src/Modules/parameter.mdd link=static auto=no load=yes
+name=zsh/watch modfile=Src/Modules/watch.mdd link=static auto=no load=no
 name=zsh/pcre modfile=Src/Modules/pcre.mdd link=static auto=no load=no
 name=zsh/regex modfile=Src/Modules/regex.mdd link=static auto=no load=no
 name=zsh/net/socket modfile=Src/Modules/socket.mdd link=static auto=no load=no
