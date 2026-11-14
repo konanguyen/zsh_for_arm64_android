@@ -54,12 +54,12 @@ all: out/$(ZIP)
 
 build/work/$(ARCHIVE):
 	mkdir -p $(WORK); \
-	wget --output-document=$(ARCHIVE) $(SRCURL); \
+	wget --output-document=$(WORK)/$(ARCHIVE) $(SRCURL); \
 	cd $(WORK); tar xf $(ARCHIVE)
 
 build/work/$(NCARCHIVE):
 	mkdir -p $(WORK); \
-	wget --output-document=$(NCARCHIVE) $(NCSRCURL); \
+	wget --output-document=$(WORK)/$(NCARCHIVE) $(NCSRCURL); \
 	cd $(WORK); tar xf $(NCARCHIVE)
 
 # Host-native tic/infocmp are required to compile the fallback terminfo
@@ -116,9 +116,9 @@ $(DEPSTAGE)/lib/libncurses.a: $(NCTIC)
 	$(MAKE) -C $(NCOBJ) -j$(PROCS) libs; \
 	$(MAKE) -C $(NCOBJ) install
 
-build/work/$(SRCDIR)/Makefile: build/work/$(ARCHIVE) $(DEPSTAGE)/lib/libncurses.a
+build/work/$(SRCDIR)/Makefile: build/work/$(ARCHIVE) $(DEPSTAGE)/lib/libncurses.a $(CURDIR)/build/config.modules
 	cd $(WORK)/$(SRCDIR); \
-	cp ../../config.modules .; \
+	cp $(CURDIR)/build/config.modules .; \
 	CFLAGS="$(NDKCFLAGS)" \
 	CPPFLAGS="-I$(DEPSTAGE)/include -I$(DEPSTAGE)/include/ncurses" \
 	LDFLAGS="-L$(DEPSTAGE)/lib" \
