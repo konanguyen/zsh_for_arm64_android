@@ -4,3 +4,4 @@ version=1.5
 versionCode=15
 author=me@partcyb.org
 description=Zsh is a modern *nix shell with many advanced features.
+updateJson=https://github.com/konanguyen/zsh_for_arm64_android/releases/latest/download/update.json

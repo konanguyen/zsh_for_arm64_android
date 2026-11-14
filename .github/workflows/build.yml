@@ -35,16 +35,35 @@ jobs:
       - name: Build the module
         run: make
 
+      # Magisk app checks module.prop's updateJson for in-app updates; the
+      # zip/changelog URLs use the fixed "latest release" asset paths so the
+      # file never needs manual editing between releases.
+      - name: Generate update.json
+        run: |
+          VERSION=$(sed -n 's/^version=//p' module.prop)
+          jq -n \
+            --arg v "$VERSION" \
+            --arg c "$(sed -n 's/^versionCode=//p' module.prop)" \
+            '{version: $v,
+              versionCode: ($c | tonumber),
+              zipUrl: ("https://github.com/konanguyen/zsh_for_arm64_android/releases/latest/download/zsh_arm64-" + $v + ".zip"),
+              changelog: "https://raw.githubusercontent.com/konanguyen/zsh_for_arm64_android/master/changelog.md"}' > update.json
+          cat update.json
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: zsh_arm64-module
-          path: out/*.zip
+          path: |
+            out/*.zip
+            update.json
           if-no-files-found: error
 
       - name: Attach zip to GitHub release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: out/*.zip
+          files: |
+            out/*.zip
+            update.json
           generate_release_notes: true
